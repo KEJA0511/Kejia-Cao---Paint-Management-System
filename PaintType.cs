@@ -8,5 +8,8 @@ enum PaintType
 {
     BaseCoat, //底漆
     Glossy, //高光漆
-    Matte//哑光漆
+    Matte, //哑光漆
+    SemiGloss, 
+    Gloss, 
+    WhiteOnWhite
 }
