@@ -3,13 +3,13 @@ namespace PaintSystem;
 class Order
 {
     public DateTime CreatedAt{get; }//订单创建时间
-    public PaintProduct[] Products{get; set; } 
-    public int[] Quantity {get; set;}
+    public List<PaintProduct> Products{get; set; } 
+    public List<int> Quantity {get; set;}
     public decimal TotalPrice {get;set;}
 
-    public Order(PaintProduct[] product, int[] quantity)
+    public Order(List<PaintProduct> product, List<int> quantity)
     {
-        if (product.Length != quantity.Length)
+        if (product.Count != quantity.Count)
         {
             throw new ArgumentException("Each product must have a corresponding quantity.", nameof(quantity));
         }
@@ -23,7 +23,7 @@ class Order
     public decimal GetTotalOrderPrice()
     {
         decimal total = 0m;
-        for (int i = 0; i < Products.Length; i++)
+        for (int i = 0; i < Products.Count; i++)
         {
             total += Products[i].GetFinalPrice() * Quantity[i];
         }
@@ -34,7 +34,7 @@ class Order
     {
         Console.WriteLine($"The order is created at {CreatedAt}. ");
         Console.WriteLine($"The product information are:");
-        for (int i = 0; i < Products.Length; i++)
+        for (int i = 0; i < Products.Count; i++)
         {
             Products[i].DisplayInfo();
             Console.WriteLine($"The quantity is {Quantity[i]}");
