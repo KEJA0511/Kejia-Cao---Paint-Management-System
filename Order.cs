@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace PaintSystem; 
 
 class Order
@@ -47,5 +49,52 @@ class Order
         //输出订单中产品的折后含税单价
         foreach(PaintProduct p in Products)
         Console.WriteLine($"The price of {p.Name} is {p.GetFinalPrice()}");
+    }
+
+    public PaintProduct? GetMostExpensivePaintProduct()
+    {
+        //找出最贵的油漆
+        return Products.OrderByDescending(p=>p.Price).FirstOrDefault(); 
+    }
+
+    public void RemoveProduct(int productId)
+    {
+        //根据Product ID 删除指定的油漆
+        int index = Products.FindIndex(p => p.ProductId == productId); 
+        if(index == -1) return; //若找不到则返回
+        Products.RemoveAt(index); 
+        Quantity.RemoveAt(index); 
+        TotalPrice = GetTotalOrderPrice(); //更新删除商品后的总价
+    }
+
+    public List<PaintProduct> GetAllPaintBetween(decimal x, decimal y)
+    {
+        return Products.Where(p => p.Price>x && p.Price<y).ToList(); 
+    }
+
+    public Dictionary<PaintType, decimal> GetTotalPriceByType()
+    {
+        Dictionary<PaintType, decimal> totalPrice= new Dictionary<PaintType, decimal>(); 
+        List<PaintType> types = Products.Select(p => p.Type).Distinct().ToList(); 
+        int count = types.Count(); 
+
+        for (int i = 0; i< count; i++)
+        {
+            PaintType type = types[i]; 
+
+            decimal total = Products.Select((p, index) => {
+                if(p.Type == type)
+                {
+                    return p.GetFinalPrice()*Quantity[index]; 
+                }
+
+                return 0m; 
+            }).Sum(); 
+
+            totalPrice.Add(type, total); 
+        }
+
+    return totalPrice; 
+
     }
 }

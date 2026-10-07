@@ -11,9 +11,9 @@ class Program
         Brand brand1 = new Brand("Example Paint");
         Brand brand2 = new Brand("Sample Colours");
 
-        PaintProduct product1 = new PaintProduct("White Primer", brand1, PaintType.BaseCoat, specification1, 100m);
-        PaintProduct product2 = new PaintProduct("Blue Gloss", brand1, PaintType.Glossy, specification2, 80m);
-        PaintProduct product3 = new PaintProduct("Grey Matte", brand2, PaintType.Matte, specification3, 120m);
+        PaintProduct product1 = new PaintProduct(1, "White Primer", brand1, PaintType.BaseCoat, specification1, 100m);
+        PaintProduct product2 = new PaintProduct(2, "Blue Gloss", brand1, PaintType.Glossy, specification2, 80m);
+        PaintProduct product3 = new PaintProduct(3, "Grey Matte", brand2, PaintType.Matte, specification3, 120m);
         List<PaintProduct> products = new List<PaintProduct>{ product1, product2, product3 };
         List<int> stockQuantities = new List<int>{20, 15, 8}; 
         PaintStore store = new PaintStore(products, stockQuantities); 
