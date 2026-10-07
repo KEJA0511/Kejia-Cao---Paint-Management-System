@@ -14,8 +14,8 @@ class Program
         PaintProduct product1 = new PaintProduct("White Primer", brand1, PaintType.BaseCoat, specification1, 100m);
         PaintProduct product2 = new PaintProduct("Blue Gloss", brand1, PaintType.Glossy, specification2, 80m);
         PaintProduct product3 = new PaintProduct("Grey Matte", brand2, PaintType.Matte, specification3, 120m);
-        PaintProduct[] products = { product1, product2, product3 };
-        int[] stockQuantities = {20, 15, 8}; 
+        List<PaintProduct> products = new List<PaintProduct>{ product1, product2, product3 };
+        List<int> stockQuantities = new List<int>{20, 15, 8}; 
         PaintStore store = new PaintStore(products, stockQuantities); 
 
         Console.WriteLine("=== Available products ===");
@@ -44,8 +44,8 @@ class Program
         Console.WriteLine($"Selected discount: expected 5%, actual {discount:P0} - {(discount == 0.05m ? "PASS" : "FAIL")}");
 
         // 测试 4：购买两份同一种产品，订单总价应为 209.00。
-        PaintProduct[] orderedProducts = { product1 };
-        int[] quantities = { 2 };
+        List<PaintProduct> orderedProducts = new List<PaintProduct>{ product1 };
+        List<int> quantities = new List<int>{ 2 };
         Order order = new Order(orderedProducts, quantities);
 
         Console.WriteLine();
@@ -55,7 +55,7 @@ class Program
         Console.WriteLine($"Order total: expected 209.00, actual {order.TotalPrice:F2} - {(order.TotalPrice == 209m ? "PASS" : "FAIL")}");
 
         // 测试 5：三种产品分别购买 2、3、1 件，总价为 104.50*2 + 83.60*3 + 125.40。
-        int[] multipleQuantities = { 2, 3, 1 };
+        List<int> multipleQuantities = new List<int>{ 2, 3, 1 };
         Order multipleOrder = new Order(products, multipleQuantities);
         Console.WriteLine();
         Console.WriteLine("=== Multiple-product order ===");
@@ -72,7 +72,7 @@ class Program
         bool mismatchedLengthsRejected = false;
         try
         {
-            int[] incompleteQuantities = { 2, 3 };
+            List<int> incompleteQuantities = new List<int>{ 2, 3 };
             Order invalidOrder = new Order(products, incompleteQuantities);
         }
         catch (ArgumentException exception) when (exception.ParamName == "quantity")
@@ -84,19 +84,19 @@ class Program
         // 测试 8：商店保存三种产品，库存分别为 20、15、8 件。
         Console.WriteLine();
         Console.WriteLine("=== Paint store tests ===");
-        bool stockMatches = store.Products.Length == 3 && store.Quantities.Length == 3
+        bool stockMatches = store.Products.Count == 3 && store.Quantities.Count == 3
             && store.Products[0] == product1 && store.Quantities[0] == 20
             && store.Products[1] == product2 && store.Quantities[1] == 15
             && store.Products[2] == product3 && store.Quantities[2] == 8;
         Console.WriteLine($"Store product-stock mapping: {(stockMatches ? "PASS" : "FAIL")}");
-        for (int i = 0; i < store.Products.Length; i++)
+        for (int i = 0; i < store.Products.Count; i++)
         {
             Console.WriteLine($"{store.Products[i].Name}: stock {store.Quantities[i]}");
         }
 
         // 测试 9：从商店选择第一种和第三种产品，分别购买 2、1 件。
-        PaintProduct[] selectedProducts = { store.Products[0], store.Products[2] };
-        int[] purchaseQuantities = { 2, 1 };
+        List<PaintProduct> selectedProducts = new List<PaintProduct>{ store.Products[0], store.Products[2] };
+        List<int> purchaseQuantities = new List<int>{ 2, 1 };
         Order storeOrder = new Order(selectedProducts, purchaseQuantities);
         storeOrder.DisplayOrder();
         Console.WriteLine($"Order from store: expected 334.40, actual {storeOrder.TotalPrice:F2} - {(storeOrder.TotalPrice == 334.40m ? "PASS" : "FAIL")}");
@@ -105,7 +105,7 @@ class Program
         bool invalidStockRejected = false;
         try
         {
-            int[] incompleteStock = { 20, 15 };
+            List<int> incompleteStock = new List<int>{ 20, 15 };
             PaintStore invalidStore = new PaintStore(products, incompleteStock);
         }
         catch (ArgumentException)
