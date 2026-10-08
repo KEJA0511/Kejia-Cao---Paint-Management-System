@@ -4,7 +4,9 @@ namespace PaintSystem;
 class PaintProduct: IBuyable
 {
     public readonly decimal TaxRate; 
-    public const decimal DefaultDiscount = 0.05m; 
+    public const decimal DefaultDiscount = 0.05m;
+
+    public int ProductId {get;}
 
     public string Name {get; set;}
     public Brand Brand {get; set;}
@@ -12,9 +14,10 @@ class PaintProduct: IBuyable
     public PaintSpecification Specification {get; set; }
     public decimal Price {get; set; }
     
-    public PaintProduct(string name, Brand brand, PaintType type, PaintSpecification specification, decimal price)
+    public PaintProduct(int productId, string name, Brand brand, PaintType type, PaintSpecification specification, decimal price)
     {
         TaxRate = 0.10m; 
+        ProductId = productId; 
         Brand = brand; 
         Name = name; 
         Type = type; 
