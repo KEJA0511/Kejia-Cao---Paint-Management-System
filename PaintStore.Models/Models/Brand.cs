@@ -1,6 +1,6 @@
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class Brand
+public class Brand
 {
     public string Name {get; set; }//品牌名
 

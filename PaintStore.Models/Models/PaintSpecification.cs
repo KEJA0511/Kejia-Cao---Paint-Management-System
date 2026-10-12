@@ -1,6 +1,6 @@
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class PaintSpecification
+public class PaintSpecification
 {
     public string Color {get; set; }
     public int SizeInLiters {get; set; }

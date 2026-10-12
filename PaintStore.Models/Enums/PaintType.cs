@@ -1,10 +1,10 @@
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
 /// <summary>
 /// 枚举油漆类型
 /// </summary>
 
-enum PaintType
+public enum PaintType
 {
     BaseCoat, //底漆
     Glossy, //高光漆

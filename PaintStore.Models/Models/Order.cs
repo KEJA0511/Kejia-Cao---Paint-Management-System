@@ -1,24 +1,26 @@
 using System.Text;
 
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class Order
+public class Order
 {
+    public int OrderId{get; }
     public DateTime CreatedAt{get; }//订单创建时间
     public List<PaintProduct> Products{get; set; } 
     public List<int> Quantity {get; set;}
     public decimal TotalPrice {get;set;}
 
-    public Order(List<PaintProduct> product, List<int> quantity)
+    public Order(int orderId, List<PaintProduct> products, List<int> quantity)
     {
-        if (product.Count != quantity.Count)
+        if (products.Count != quantity.Count)
         {
             throw new ArgumentException("Each product must have a corresponding quantity.", nameof(quantity));
         }
 
+        OrderId = orderId; 
         CreatedAt = DateTime.Now; 
         Quantity = quantity; 
-        Products = product; 
+        Products = products; 
         TotalPrice = GetTotalOrderPrice();
     }
 

@@ -1,37 +1,32 @@
-# Kejia-Cao---Paint-Management-System
-A C# console application for managing paint products and orders. Homework in DistinctionCoding. 
+# PaintStore — Week 3-1 API
 
-## Project structure
+本分支保存 ASP.NET Core REST API 作业。旧的控制台项目保留在 `feat/week2-2` 分支。
 
-- `Models/`: paint products, specifications, brands, stores, orders, users and payments.
-- `Interfaces/`: contracts such as `IBuyable`.
-- `Enums/`: paint types, payment statuses and payment methods.
-- `Program.cs`: console demonstration of products, orders and user payment history.
-- `Tests/PaintSystem.Tests/`: independent xUnit tests using assertions.
+## 项目结构
 
-All application types retain the `PaintSystem` namespace. Internal types are exposed
-only to the test assembly through `InternalsVisibleTo`.
+- `PaintStore.slnx`：包含两个项目的 Solution。
+- `PaintStore.API`：Controller、路由和 Swagger。
+- `PaintStore.Models`：产品、订单等模型。
 
-## Run the demonstration
+## 运行
 
-Requires the .NET 10 SDK. From the repository root:
+需要 .NET 10 SDK。在仓库根目录执行：
 
-```bash
-dotnet run --project PaintSystem.csproj
+```sh
+dotnet restore PaintStore.slnx
+dotnet build PaintStore.slnx
+dotnet run --project PaintStore.API/PaintStore.API.csproj --launch-profile http
 ```
 
-The console output demonstrates application behavior; it is not the automated test report.
+Swagger：`http://localhost:5253/swagger/index.html`。
 
-## Build and run automated tests
+## 作业接口
 
-```bash
-dotnet build PaintSystem.sln
-dotnet test PaintSystem.sln
-```
+| 方法 | 路径 | 用途 |
+|---|---|---|
+| GET | `/api/PaintProducts/all` | 获取全部 mock 产品 |
+| GET | `/api/Order/all` | 获取全部 mock 订单 |
+| POST | `/api/Order/createOrder` | 从 JSON Body 接收订单，返回 201 |
+| GET | `/api/Order/FilterOrders?minPrice=100&maxPrice=200` | 返回总价严格大于最小值、严格小于最大值的订单 |
 
-The test project references the application project. Tests cover the checks previously
-mixed into `Program.cs`, plus Order, Payment and User queries, price boundaries,
-product/quantity mapping and empty histories. NuGet packages are restored on the first run.
-
-The project layout and test commands follow the
-[Microsoft xUnit tutorial](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-csharp-with-xunit).
+当前使用 mock 数据，没有数据库。订单列表是 Controller 的实例字段，新增订单不会跨请求保留。

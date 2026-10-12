@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices.Swift;
 
-namespace PaintSystem; 
-class PaintProduct: IBuyable
+namespace PaintStore.Models; 
+public class PaintProduct: IBuyable
 {
     public readonly decimal TaxRate; 
     public const decimal DefaultDiscount = 0.05m;

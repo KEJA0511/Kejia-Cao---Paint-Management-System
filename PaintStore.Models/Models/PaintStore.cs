@@ -1,6 +1,6 @@
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class PaintStore
+public class PaintStore
 {
     public List<PaintProduct> Products {get;set;}
     public List<int> Quantities {get;set;}

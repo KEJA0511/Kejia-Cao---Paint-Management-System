@@ -1,8 +1,8 @@
 using System.IO.Pipes;
 
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class Payment
+public class Payment
 {
     public Order Order{get;set;}
     public int PaymentId{get;set;}

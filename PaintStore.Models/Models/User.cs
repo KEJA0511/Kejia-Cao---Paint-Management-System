@@ -1,6 +1,6 @@
-namespace PaintSystem; 
+namespace PaintStore.Models; 
 
-class User
+public class User
 {
     public List<Order> HistoryOrders{get;set;}
     public string UserName{get;set;}
