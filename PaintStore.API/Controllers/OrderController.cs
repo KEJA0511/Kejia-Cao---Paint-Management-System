@@ -57,7 +57,7 @@ public sealed class OrderController : ControllerBase
         return OrdersMock.OrderBy(order => order.CreatedAt).ToList(); 
     }
 
-    [HttpPost("createOrder")]
+    [HttpPost("Orders/createOrder")]
     public IActionResult CreateOrder([FromBody]Order order)
     {
         OrdersMock.Add(order); 
@@ -70,6 +70,17 @@ public sealed class OrderController : ControllerBase
         var orders = OrdersMock.Where(order => order.TotalPrice > minPrice
                                         && order.TotalPrice < maxPrice).ToList(); 
         
+        return Ok(orders); 
+    }
+
+    [HttpGet("Orders/GetPaginatedOrders")]
+    public IActionResult GetPaginatedOrders([FromQuery]int pageNumber, [FromQuery]int pageSize)
+    {
+        if( pageNumber <= 0 || pageSize <=0 )
+        {
+            return BadRequest("参数不合法"); 
+        }
+        var orders = OrdersMock.OrderBy(order => order.OrderId).Skip((pageNumber-1)*pageSize).Take(pageSize).ToList(); 
         return Ok(orders); 
     }
 }

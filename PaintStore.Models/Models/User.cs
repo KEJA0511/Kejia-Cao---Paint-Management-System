@@ -1,18 +1,32 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PaintStore.Models; 
 
 public class User
-{
-    public List<Order> HistoryOrders{get;set;}
-    public string UserName{get;set;}
-    public List<Payment> HistoryPayments{get;set;}
+{   
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int UserId{get;set;}
 
-    public User(List<Order> historyOrders, string userName)
+    public List<Order> HistoryOrders{get;set;}
+    [Required]
+    public string UserName{get;set;}
+    [Required]
+    [EmailAddress]
+    public string Email{get;set;}
+    [Required]
+    public string Phone{get;set;}
+    public List<Payment> HistoryPayments{get;set;}//空列表表示没有历史订单
+    public DateTime CreatedDate{get;} = DateTime.Now; 
+    public User(int userId, List<Order> historyOrders, string userName, string email, string phone)
     {
+        UserId = userId; 
         HistoryOrders = historyOrders; 
         UserName = userName; 
+        Email = email; 
+        Phone = phone; 
         HistoryPayments = new List<Payment>(); 
     }
-
 
     public Order? GetMostExpensiveOrder()
     {

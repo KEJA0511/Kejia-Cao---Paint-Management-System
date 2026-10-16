@@ -1,27 +1,47 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace PaintStore.Models; 
 
 public class Order
 {
+    [Required]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OrderId{get; }
-    public DateTime CreatedAt{get; }//订单创建时间
-    public List<PaintProduct> Products{get; set; } 
+    [Required]
+    public DateTime CreatedAt{get; } = DateTime.Now; //订单创建时间
+    [Required]
+    public List<PaintProduct> Products{get; set; }
+    [Required]
     public List<int> Quantity {get; set;}
+    [Required]
+    [Range(0,10000000)]
     public decimal TotalPrice {get;set;}
+    [Required]
+    public int UserId{get;}
 
+    private Order (){}
     public Order(int orderId, List<PaintProduct> products, List<int> quantity)
     {
+        foreach (int quantityItem in quantity)
+        {
+            if(quantityItem < 1 || quantityItem > 100)
+            {
+                throw new ArgumentOutOfRangeException(nameof(quantity), "The quantity should be greater than zero. "); 
+            }
+        }
+
         if (products.Count != quantity.Count)
         {
             throw new ArgumentException("Each product must have a corresponding quantity.", nameof(quantity));
         }
 
         OrderId = orderId; 
-        CreatedAt = DateTime.Now; 
         Quantity = quantity; 
         Products = products; 
-        TotalPrice = GetTotalOrderPrice();
+        TotalPrice = GetTotalOrderPrice(); 
     }
 
     public decimal GetTotalOrderPrice()
