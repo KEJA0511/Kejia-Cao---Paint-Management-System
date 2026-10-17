@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PaintStore.API.Tests/PaintStore.API.Tests.csproj" />
+  <Project Path="PaintStore.API/PaintStore.API.csproj" />
+  <Project Path="PaintStore.Models/PaintStore.Models.csproj" />
+</Solution>
