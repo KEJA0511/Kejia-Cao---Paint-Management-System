@@ -48,16 +48,16 @@ public sealed class OrderController : ControllerBase
                     specification: new PaintSpecification("Grey", 10),
                     price: 100m)
             },
-            quantity: new List<int> { 1 })
+            quantity: new List<int> {1})
     };
 
-    [HttpGet("all")]
-    public ActionResult<IEnumerable<Order>> GetAll()
+    [HttpGet("All")]
+    public ActionResult<IEnumerable<Order>> GetAllOrders([FromQuery]int pageNumber, [FromQuery]int pageSize)
     {
-        return OrdersMock.OrderBy(order => order.CreatedAt).ToList(); 
+        return OrdersMock.OrderBy(order => order.CreatedAt).Skip((pageNumber-1)*pageSize).Take(pageSize).ToList(); 
     }
 
-    [HttpPost("Orders/createOrder")]
+    [HttpPost("createOrder")]
     public IActionResult CreateOrder([FromBody]Order order)
     {
         OrdersMock.Add(order); 
@@ -73,7 +73,7 @@ public sealed class OrderController : ControllerBase
         return Ok(orders); 
     }
 
-    [HttpGet("Orders/GetPaginatedOrders")]
+    [HttpGet("GetPaginatedOrders")]
     public IActionResult GetPaginatedOrders([FromQuery]int pageNumber, [FromQuery]int pageSize)
     {
         if( pageNumber <= 0 || pageSize <=0 )
@@ -83,5 +83,46 @@ public sealed class OrderController : ControllerBase
         var orders = OrdersMock.OrderBy(order => order.OrderId).Skip((pageNumber-1)*pageSize).Take(pageSize).ToList(); 
         return Ok(orders); 
     }
-}
 
+    [HttpGet("GetOrdersByPriceRange")]
+    public IActionResult GetOrdersByPriceRange([FromQuery]int min, [FromQuery]int max)
+    {
+        if(min>max) return BadRequest("Invalid Value! "); 
+        var orders = OrdersMock.Where(order => order.TotalPrice >= min
+                                            && order.TotalPrice <= max).ToList(); 
+        return Ok(orders); 
+    }
+
+    [HttpGet("GetOrdersByPaintId")]
+    public IActionResult GetOrdersByPaintId([FromQuery]int paintId)
+    {
+        var order = OrdersMock.Where(o => o.Products.Any(p => p.ProductId == paintId)).ToList(); 
+        return Ok(order); 
+    }
+
+    [HttpGet("GetOrdersByUserId")]
+    public IActionResult GetOrdersByUserId([FromQuery]int userId)
+    {
+        var order = OrdersMock.Where(o => o.UserId == userId).ToList(); 
+        return Ok(order); 
+    }
+
+    [HttpGet("GetLastMonthOrders")]
+    public IActionResult GetLastMonthOrders()
+    {
+        var now = DateTime.Now; 
+        var startOfThisMonth = new DateTime(now.Year, now.Month, 1);
+        var startOfLastMonth = startOfThisMonth.AddMonths(-1);
+
+        var order = OrdersMock.Where(o => o.CreatedAt>=startOfLastMonth&&
+                                        o.CreatedAt<startOfThisMonth); 
+        return Ok(order); 
+    }
+
+    [HttpGet("GetOrdersByDate")]
+    public IActionResult GetOrdersByDate([FromQuery]DateTime date)
+    {
+        var order = OrdersMock.Where(o => o.CreatedAt.Date == date.Date); 
+        return Ok(order); 
+    }
+}

@@ -33,12 +33,33 @@ public sealed class PaintProductsController : ControllerBase
             price: 100m)
     };
 
-    [HttpGet("all")]
-    public ActionResult<IEnumerable<PaintProduct>> GetAllMock()
+    [HttpGet("GetAllPaintProducts")]
+    public ActionResult<IEnumerable<PaintProduct>> GetAllPaintProducts([FromQuery]int pageSize, [FromQuery]int pageNumber)
     {
-        return ProductsMock.OrderBy(product => product.ProductId).ToList(); 
+        //分页
+        return ProductsMock.OrderBy(product => product.ProductId).Skip((pageNumber-1)*pageSize).Take(pageSize).ToList(); 
     }
 
+    [HttpGet("GetProductsByPriceRange")]
+    public IActionResult GetProductsByPriceRange([FromQuery]decimal min, [FromQuery]decimal max, [FromQuery]int pageSize, [FromQuery]int pageNumber)
+    {
+        //分页，价格升序
+        var products = ProductsMock.Where(p => p.Price>=min && p.Price<max).OrderBy(p=>p.Price).Skip((pageNumber-1)*pageSize).Take(pageSize).ToList(); 
+        return Ok(products); 
+    }
+    
+    [HttpGet("GetPaintProductsByPaintId")]
+    public IActionResult GetPaintProductByPaintId([FromQuery]int paintId)
+    {
+        return Ok(ProductsMock.Where(p=>p.ProductId == paintId)); 
+    }
+
+    [HttpGet("GetPaintProductsByUserId")]
+    public IActionResult GetPaintProductByUserId([FromQuery]int paintId)
+    {
+        //这里没有很懂，为什么要通过UserId查找商品呢？是查找客户买过什么商品吗？
+        return Ok(); 
+    }
     
 
 }
