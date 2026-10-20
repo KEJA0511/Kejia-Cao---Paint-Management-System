@@ -1,7 +1,10 @@
-namespace PaintSystem; 
+using System.ComponentModel.DataAnnotations;
 
-class Brand
+namespace PaintStore.Models; 
+
+public class Brand
 {
+    [Required]
     public string Name {get; set; }//品牌名
 
     public Brand(string name)

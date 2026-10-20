@@ -1,20 +1,36 @@
 using System.Runtime.InteropServices.Swift;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PaintSystem; 
-class PaintProduct: IBuyable
+namespace PaintStore.Models; 
+public class PaintProduct: IBuyable
 {
-    public readonly decimal TaxRate; 
-    public const decimal DefaultDiscount = 0.05m; 
+    public readonly decimal TaxRate = 0.10m; 
+    public const decimal DefaultDiscount = 0.05m;
 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int ProductId {get;private set; } //这里没有private set会报错
+
+    [Required]
+    [MaxLength(100)]
     public string Name {get; set;}
+    [Required]
     public Brand Brand {get; set;}
+    [EnumDataType(typeof(PaintType))]
     public PaintType Type {get; set;}
-    public PaintSpecification Specification {get; set; }
-    public decimal Price {get; set; }
+    [Required]
+    public PaintSpecification Specification {get; set;}
+    [Range(0,100000000000)]
+    public decimal Price {get; set;}
+    [Required]
+    public DateTime CreatedDate {get;set;} = DateTime.Now; 
     
-    public PaintProduct(string name, Brand brand, PaintType type, PaintSpecification specification, decimal price)
+    private PaintProduct(){}
+
+    public PaintProduct(int productId, string name, Brand brand, PaintType type, PaintSpecification specification, decimal price)
     {
-        TaxRate = 0.10m; 
+        ProductId = productId; 
         Brand = brand; 
         Name = name; 
         Type = type; 
